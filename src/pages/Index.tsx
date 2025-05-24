@@ -9,6 +9,7 @@ const Index = () => {
   const [selectedDevice, setSelectedDevice] = useState<string>("");
   const [hasVPN, setHasVPN] = useState<string>("");
   const [hasNonRFSim, setHasNonRFSim] = useState<string>("");
+  const [wantsESim, setWantsESim] = useState<string>("");
 
   const handleFirstStep = () => {
     if (selectedDevice) {
@@ -23,9 +24,19 @@ const Index = () => {
   };
 
   const handleThirdStep = () => {
-    if (hasNonRFSim) {
+    if (hasNonRFSim === "НЕТ") {
+      setStep(4);
+    } else if (hasNonRFSim === "ДА") {
       alert(
         `Устройство: ${selectedDevice}, ВПН: ${hasVPN}, Не РФ сим-карта: ${hasNonRFSim}`,
+      );
+    }
+  };
+
+  const handleFourthStep = () => {
+    if (wantsESim) {
+      alert(
+        `Устройство: ${selectedDevice}, ВПН: ${hasVPN}, Не РФ сим-карта: ${hasNonRFSim}, E-sim: ${wantsESim}`,
       );
     }
   };
@@ -39,7 +50,9 @@ const Index = () => {
               ? "На каком устройстве вы будете пользоваться вашим WISE?"
               : step === 2
                 ? "У вас есть европейский ВПН?"
-                : "У вас есть не РФ Сим-карта?"}
+                : step === 3
+                  ? "У вас есть не РФ Сим-карта?"
+                  : "Мы можем зарегистрировать ваш аккаунт на европейскую E-sim и продать ее вам. Хотите приобрести E-sim?"}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -93,7 +106,7 @@ const Index = () => {
                 </Label>
               </div>
             </RadioGroup>
-          ) : (
+          ) : step === 3 ? (
             <RadioGroup
               value={hasNonRFSim}
               onValueChange={setHasNonRFSim}
@@ -119,6 +132,32 @@ const Index = () => {
                 </Label>
               </div>
             </RadioGroup>
+          ) : (
+            <RadioGroup
+              value={wantsESim}
+              onValueChange={setWantsESim}
+              className="space-y-4"
+            >
+              <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                <RadioGroupItem value="ДА" id="esim-yes" />
+                <Label
+                  htmlFor="esim-yes"
+                  className="text-lg cursor-pointer flex-1"
+                >
+                  ✅ ДА
+                </Label>
+              </div>
+
+              <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                <RadioGroupItem value="НЕТ" id="esim-no" />
+                <Label
+                  htmlFor="esim-no"
+                  className="text-lg cursor-pointer flex-1"
+                >
+                  ❌ НЕТ
+                </Label>
+              </div>
+            </RadioGroup>
           )}
 
           <Button
@@ -127,10 +166,18 @@ const Index = () => {
                 ? handleFirstStep
                 : step === 2
                   ? handleSecondStep
-                  : handleThirdStep
+                  : step === 3
+                    ? handleThirdStep
+                    : handleFourthStep
             }
             disabled={
-              step === 1 ? !selectedDevice : step === 2 ? !hasVPN : !hasNonRFSim
+              step === 1
+                ? !selectedDevice
+                : step === 2
+                  ? !hasVPN
+                  : step === 3
+                    ? !hasNonRFSim
+                    : !wantsESim
             }
             className="w-full mt-6 h-12 text-lg"
           >
@@ -138,7 +185,9 @@ const Index = () => {
               ? "Продолжить"
               : step === 2
                 ? "Продолжить"
-                : "Завершить"}
+                : step === 3
+                  ? "Продолжить"
+                  : "Завершить"}
           </Button>
         </CardContent>
       </Card>
