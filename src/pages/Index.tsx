@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { useSurvey } from "@/hooks/useSurvey";
 import { SURVEY_STEPS } from "@/constants/surveySteps";
 import SurveyStep from "@/components/survey/SurveyStep";
@@ -61,6 +62,15 @@ const Index = () => {
           Пройдите небольшую анкету, в зависимости от ваших ответов мы
           предоставим Вам аккаунт адаптированный именно под Вас!
         </p>
+
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-gray-600">Прогресс</span>
+            <span className="text-sm text-gray-600">{step} из 4</span>
+          </div>
+          <Progress value={(step / 4) * 100} className="h-2" />
+        </div>
+
         <Card className="shadow-lg">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-semibold text-gray-900">
