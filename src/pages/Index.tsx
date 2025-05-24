@@ -73,26 +73,6 @@ const Index = () => {
                 </Label>
               </div>
             </RadioGroup>
-          ) : (
-            <RadioGroup
-              value={hasVPN}
-              onValueChange={setHasVPN}
-              className="space-y-4"
-            >
-              <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <RadioGroupItem value="ДА" id="yes" />
-                <Label htmlFor="yes" className="text-lg cursor-pointer flex-1">
-                  ✅ ДА
-                </Label>
-              </div>
-
-              <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <RadioGroupItem value="НЕТ" id="no" />
-                <Label htmlFor="no" className="text-lg cursor-pointer flex-1">
-                  ❌ НЕТ
-                </Label>
-              </div>
-            </RadioGroup>
           ) : step === 2 ? (
             <RadioGroup
               value={hasVPN}
@@ -121,14 +101,20 @@ const Index = () => {
             >
               <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
                 <RadioGroupItem value="ДА" id="sim-yes" />
-                <Label htmlFor="sim-yes" className="text-lg cursor-pointer flex-1">
+                <Label
+                  htmlFor="sim-yes"
+                  className="text-lg cursor-pointer flex-1"
+                >
                   ✅ ДА
                 </Label>
               </div>
 
               <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
                 <RadioGroupItem value="НЕТ" id="sim-no" />
-                <Label htmlFor="sim-no" className="text-lg cursor-pointer flex-1">
+                <Label
+                  htmlFor="sim-no"
+                  className="text-lg cursor-pointer flex-1"
+                >
                   ❌ НЕТ
                 </Label>
               </div>
@@ -136,11 +122,23 @@ const Index = () => {
           )}
 
           <Button
-            onClick={step === 1 ? handleFirstStep : step === 2 ? handleSecondStep : handleThirdStep}
-            disabled={step === 1 ? !selectedDevice : step === 2 ? !hasVPN : !hasNonRFSim}
+            onClick={
+              step === 1
+                ? handleFirstStep
+                : step === 2
+                  ? handleSecondStep
+                  : handleThirdStep
+            }
+            disabled={
+              step === 1 ? !selectedDevice : step === 2 ? !hasVPN : !hasNonRFSim
+            }
             className="w-full mt-6 h-12 text-lg"
           >
-            {step === 1 ? "Продолжить" : step === 2 ? "Продолжить" : "Завершить"}
+            {step === 1
+              ? "Продолжить"
+              : step === 2
+                ? "Продолжить"
+                : "Завершить"}
           </Button>
         </CardContent>
       </Card>
