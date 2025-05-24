@@ -45,6 +45,10 @@ const Index = () => {
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="text-center">
+          <p className="text-gray-600 mb-4">
+            Пройдите небольшую анкету, в зависимости от ваших ответов мы
+            предоставим Вам аккаунт адаптированный именно под Вас!
+          </p>
           <CardTitle className="text-2xl font-semibold text-gray-900">
             {step === 1
               ? "На каком устройстве вы будете пользоваться вашим WISE?"
@@ -68,21 +72,21 @@ const Index = () => {
                   htmlFor="android"
                   className="text-lg cursor-pointer flex-1"
                 >
-                  📱 Android
+                  Android
                 </Label>
               </div>
 
               <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
                 <RadioGroupItem value="iOS" id="ios" />
                 <Label htmlFor="ios" className="text-lg cursor-pointer flex-1">
-                  🍎 iOS
+                  iOS
                 </Label>
               </div>
 
               <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
                 <RadioGroupItem value="ПК" id="pc" />
                 <Label htmlFor="pc" className="text-lg cursor-pointer flex-1">
-                  💻 ПК
+                  ПК
                 </Label>
               </div>
             </RadioGroup>
@@ -95,14 +99,14 @@ const Index = () => {
               <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
                 <RadioGroupItem value="ДА" id="yes" />
                 <Label htmlFor="yes" className="text-lg cursor-pointer flex-1">
-                  ✅ ДА
+                  ДА
                 </Label>
               </div>
 
               <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
                 <RadioGroupItem value="НЕТ" id="no" />
                 <Label htmlFor="no" className="text-lg cursor-pointer flex-1">
-                  ❌ НЕТ
+                  НЕТ
                 </Label>
               </div>
             </RadioGroup>
@@ -118,7 +122,7 @@ const Index = () => {
                   htmlFor="sim-yes"
                   className="text-lg cursor-pointer flex-1"
                 >
-                  ✅ ДА
+                  ДА
                 </Label>
               </div>
 
@@ -128,7 +132,7 @@ const Index = () => {
                   htmlFor="sim-no"
                   className="text-lg cursor-pointer flex-1"
                 >
-                  ❌ НЕТ
+                  НЕТ
                 </Label>
               </div>
             </RadioGroup>
@@ -144,7 +148,7 @@ const Index = () => {
                   htmlFor="esim-yes"
                   className="text-lg cursor-pointer flex-1"
                 >
-                  ✅ ДА
+                  ДА
                 </Label>
               </div>
 
@@ -154,7 +158,7 @@ const Index = () => {
                   htmlFor="esim-no"
                   className="text-lg cursor-pointer flex-1"
                 >
-                  ❌ НЕТ
+                  НЕТ
                 </Label>
               </div>
             </RadioGroup>
