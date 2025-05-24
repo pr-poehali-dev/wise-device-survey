@@ -1,43 +1,56 @@
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { useSurvey } from "@/hooks/useSurvey";
+import { SURVEY_STEPS } from "@/constants/surveySteps";
+import SurveyStep from "@/components/survey/SurveyStep";
 
 const Index = () => {
-  const [step, setStep] = useState<number>(1);
-  const [selectedDevice, setSelectedDevice] = useState<string>("");
-  const [hasVPN, setHasVPN] = useState<string>("");
-  const [hasNonRFSim, setHasNonRFSim] = useState<string>("");
-  const [wantsESim, setWantsESim] = useState<string>("");
+  const { step, surveyData, updateField, nextStep, showResults, canProceed } =
+    useSurvey();
 
-  const handleFirstStep = () => {
-    if (selectedDevice) {
-      setStep(2);
+  const currentStep = SURVEY_STEPS[step];
+
+  const handleSubmit = () => {
+    if (step === 3 && surveyData.hasNonRFSim === "ДА") {
+      showResults();
+    } else if (step === 3 && surveyData.hasNonRFSim === "НЕТ") {
+      nextStep();
+    } else if (step === 4) {
+      showResults();
+    } else {
+      nextStep();
     }
   };
 
-  const handleSecondStep = () => {
-    if (hasVPN) {
-      setStep(3);
+  const getCurrentValue = () => {
+    switch (step) {
+      case 1:
+        return surveyData.selectedDevice;
+      case 2:
+        return surveyData.hasVPN;
+      case 3:
+        return surveyData.hasNonRFSim;
+      case 4:
+        return surveyData.wantsESim;
+      default:
+        return "";
     }
   };
 
-  const handleThirdStep = () => {
-    if (hasNonRFSim === "НЕТ") {
-      setStep(4);
-    } else if (hasNonRFSim === "ДА") {
-      alert(
-        `Устройство: ${selectedDevice}, ВПН: ${hasVPN}, Не РФ сим-карта: ${hasNonRFSim}`,
-      );
-    }
-  };
-
-  const handleFourthStep = () => {
-    if (wantsESim) {
-      alert(
-        `Устройство: ${selectedDevice}, ВПН: ${hasVPN}, Не РФ сим-карта: ${hasNonRFSim}, E-sim: ${wantsESim}`,
-      );
+  const handleValueChange = (value: string) => {
+    switch (step) {
+      case 1:
+        updateField("selectedDevice", value);
+        break;
+      case 2:
+        updateField("hasVPN", value);
+        break;
+      case 3:
+        updateField("hasNonRFSim", value);
+        break;
+      case 4:
+        updateField("wantsESim", value);
+        break;
     }
   };
 
@@ -51,154 +64,22 @@ const Index = () => {
         <Card className="shadow-lg">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-semibold text-gray-900">
-              {step === 1
-                ? "На каком устройстве вы будете пользоваться вашим WISE?"
-                : step === 2
-                  ? "У вас есть европейский ВПН?"
-                  : step === 3
-                    ? "У вас есть не РФ Сим-карта?"
-                    : "Мы можем зарегистрировать ваш аккаунт на европейскую E-sim и продать ее вам. Хотите приобрести E-sim?"}
+              {currentStep.title}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {step === 1 ? (
-              <RadioGroup
-                value={selectedDevice}
-                onValueChange={setSelectedDevice}
-                className="space-y-4"
-              >
-                <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                  <RadioGroupItem value="Android" id="android" />
-                  <Label
-                    htmlFor="android"
-                    className="text-lg cursor-pointer flex-1"
-                  >
-                    Android
-                  </Label>
-                </div>
-
-                <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                  <RadioGroupItem value="iOS" id="ios" />
-                  <Label
-                    htmlFor="ios"
-                    className="text-lg cursor-pointer flex-1"
-                  >
-                    iOS
-                  </Label>
-                </div>
-
-                <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                  <RadioGroupItem value="ПК" id="pc" />
-                  <Label htmlFor="pc" className="text-lg cursor-pointer flex-1">
-                    ПК
-                  </Label>
-                </div>
-              </RadioGroup>
-            ) : step === 2 ? (
-              <RadioGroup
-                value={hasVPN}
-                onValueChange={setHasVPN}
-                className="space-y-4"
-              >
-                <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                  <RadioGroupItem value="ДА" id="yes" />
-                  <Label
-                    htmlFor="yes"
-                    className="text-lg cursor-pointer flex-1"
-                  >
-                    ДА
-                  </Label>
-                </div>
-
-                <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                  <RadioGroupItem value="НЕТ" id="no" />
-                  <Label htmlFor="no" className="text-lg cursor-pointer flex-1">
-                    НЕТ
-                  </Label>
-                </div>
-              </RadioGroup>
-            ) : step === 3 ? (
-              <RadioGroup
-                value={hasNonRFSim}
-                onValueChange={setHasNonRFSim}
-                className="space-y-4"
-              >
-                <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                  <RadioGroupItem value="ДА" id="sim-yes" />
-                  <Label
-                    htmlFor="sim-yes"
-                    className="text-lg cursor-pointer flex-1"
-                  >
-                    ДА
-                  </Label>
-                </div>
-
-                <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                  <RadioGroupItem value="НЕТ" id="sim-no" />
-                  <Label
-                    htmlFor="sim-no"
-                    className="text-lg cursor-pointer flex-1"
-                  >
-                    НЕТ
-                  </Label>
-                </div>
-              </RadioGroup>
-            ) : (
-              <RadioGroup
-                value={wantsESim}
-                onValueChange={setWantsESim}
-                className="space-y-4"
-              >
-                <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                  <RadioGroupItem value="ДА" id="esim-yes" />
-                  <Label
-                    htmlFor="esim-yes"
-                    className="text-lg cursor-pointer flex-1"
-                  >
-                    ДА
-                  </Label>
-                </div>
-
-                <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                  <RadioGroupItem value="НЕТ" id="esim-no" />
-                  <Label
-                    htmlFor="esim-no"
-                    className="text-lg cursor-pointer flex-1"
-                  >
-                    НЕТ
-                  </Label>
-                </div>
-              </RadioGroup>
-            )}
+            <SurveyStep
+              value={getCurrentValue()}
+              onValueChange={handleValueChange}
+              options={currentStep.options}
+            />
 
             <Button
-              onClick={
-                step === 1
-                  ? handleFirstStep
-                  : step === 2
-                    ? handleSecondStep
-                    : step === 3
-                      ? handleThirdStep
-                      : handleFourthStep
-              }
-              disabled={
-                step === 1
-                  ? !selectedDevice
-                  : step === 2
-                    ? !hasVPN
-                    : step === 3
-                      ? !hasNonRFSim
-                      : !wantsESim
-              }
+              onClick={handleSubmit}
+              disabled={!canProceed()}
               className="w-full mt-6 h-12 text-lg"
             >
-              {step === 1
-                ? "Продолжить"
-                : step === 2
-                  ? "Продолжить"
-                  : step === 3
-                    ? "Продолжить"
-                    : "Завершить"}
+              {step === 4 ? "Завершить" : "Продолжить"}
             </Button>
           </CardContent>
         </Card>
