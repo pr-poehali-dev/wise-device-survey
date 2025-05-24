@@ -57,7 +57,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <p className="text-6xl font-medium text-gray-700 mb-8 text-center pt-8">
+        <p className="text-xl font-normal text-gray-600 mb-12 text-center leading-relaxed max-w-lg mx-auto">
           Пройдите небольшую анкету, в зависимости от ваших ответов мы
           предоставим Вам аккаунт адаптированный именно под Вас!
         </p>
